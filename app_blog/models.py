@@ -10,8 +10,8 @@ from django.urls import reverse
 
 
 class Category(models.Model):
-    category = models.CharField(u'Категорія', max_length=250,
-                                help_text=u'Максимум 250 символів')
+    category = models.CharField(u'Категорія',
+       max_length=250, help_text=u'Максимум 250 символів')
     slug = models.SlugField(u'Слаг')
     objects = models.Manager()
 
@@ -29,6 +29,7 @@ class Category(models.Model):
         except:
             url = "/"
         return url
+
 
 
 class Article(models.Model):

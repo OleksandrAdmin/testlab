@@ -1,27 +1,26 @@
 # app_blog /views.py
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DateDetailView
-
-from .models import Article
+from .models import Article, Category
 
 
 class HomePageView(ListView):
- model = Article
- template_name = 'index.html'
- context_object_name = 'categories'
+    model = Article
+    template_name = 'index.html'
+    context_object_name = 'categories'
 
- def get_context_data(self, **kwargs):
-  context = super(HomePageView,
-                  self).get_context_data(**kwargs)
-  context['articles'] = \
-   Article.objects.filter(main_page=True)[:5]
+    def get_context_data(self, **kwargs):
+        context = super(HomePageView,
+                        self).get_context_data(**kwargs)
+        context['articles'] = \
+            Article.objects.filter(main_page=True)[:5]
 
-  return context
+        return context
 
- def get_queryset(self, *args, **kwargs):
-  categories = Category.objects.all()
+    def get_queryset(self, *args, **kwargs):
+        categories = Category.objects.all()
 
-  return categories
+        return categories
 
 
 class ArticleDetail(DateDetailView):
@@ -42,7 +41,6 @@ class ArticleDetail(DateDetailView):
 
         return context
 
-
 class ArticleList(ListView):
     model = Article
     template_name = 'articles_list.html'
@@ -50,24 +48,20 @@ class ArticleList(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(ArticleList, self).get_context_data(*args, **kwargs)
+        try:
+            context['category'] = Category.objects.get(slug=self.kwargs.get('slug'))
+        except Exception:
+            context['category'] = None
 
-    try:
-        context['category'] = Category.objects.get(slug=self.kwargs.get('slug'))
-    except Exception:
-        context['category'] = None
+            return context
 
-    return context
+        def get_queryset(self, *args, **kwargs):
+            articles = Article.objects.all()
 
-    def get_queryset(self, *args, **kwargs):
-        articles = Article.objects.all()
-
-        return articles
-
+            return articles
 
 class ArticleCategoryList(ArticleList):
-
     def get_queryset(self, *args, **kwargs):
         articles = Article.objects.filter(
             category__slug__in=[self.kwargs['slug']]).distinct()
-
         return articles
