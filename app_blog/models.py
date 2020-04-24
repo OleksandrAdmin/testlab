@@ -5,13 +5,14 @@ from django.utils import timezone
 from django.db import models
 from django.urls import reverse
 
+
 # Create your models here.
 # mysite /urls.py
 
 
 class Category(models.Model):
     category = models.CharField(u'Категорія',
-       max_length=250, help_text=u'Максимум 250 символів')
+                                max_length=250, help_text=u'Максимум 250 символів')
     slug = models.SlugField(u'Слаг')
     objects = models.Manager()
 
@@ -29,7 +30,6 @@ class Category(models.Model):
         except:
             url = "/"
         return url
-
 
 
 class Article(models.Model):

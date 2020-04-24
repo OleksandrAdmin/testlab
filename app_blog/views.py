@@ -41,6 +41,7 @@ class ArticleDetail(DateDetailView):
 
         return context
 
+
 class ArticleList(ListView):
     model = Article
     template_name = 'articles_list.html'
@@ -59,6 +60,7 @@ class ArticleList(ListView):
             articles = Article.objects.all()
 
             return articles
+
 
 class ArticleCategoryList(ArticleList):
     def get_queryset(self, *args, **kwargs):
